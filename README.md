@@ -1,7 +1,10 @@
 # Bhasha
 A little fun with words
-![test](/ScreenShots/Start.png)
-<img src="/ScreenShots/Start.png"  width="120" height="120">
+<img src="/ScreenShots/Start.png"  width="200" height="200">
+<img src="/ScreenShots/Onclick.png"  width="200" height="200">
+<img src="/ScreenShots/Correct.png"  width="200" height="200">
+<img src="/ScreenShots/Incorrect.png"  width="200" height="200">
+
 
 
 ## Getting Started
