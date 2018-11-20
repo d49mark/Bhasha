@@ -1,6 +1,8 @@
 # Bhasha
 A little fun with words
 ![test](/ScreenShots/Start.png)
+<img src="/ScreenShots/Start.png"  width="120" height="120">
+
 
 ## Getting Started
 
