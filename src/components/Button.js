@@ -2,8 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Text, TouchableOpacity } from "react-native";
 
+// Button component for home
 const Button = ({ title, onPress, index }) => {
-  const handlePress = () => onPress(index);
+  const handlePress = () => onPress(index); // onPress handler
   return (
     <TouchableOpacity
       onPress={handlePress}

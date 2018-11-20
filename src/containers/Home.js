@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, BackHandler } from "react-native";
 import { connect } from "react-redux";
 import styles from "./styles/Styles";
 import { actions as initialActions } from "../reducers/initial";
@@ -12,25 +12,34 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.shuffle = this.shuffle.bind(this);
+    this.reset = this.reset.bind(this);
+    this.handleBackButton = this.handleBackButton.bind(this);
   }
 
   componentDidMount() {
-    const { stringToRender, doRandom, setOpt, randomize } = this.props;
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackButton);
+    const { stringToRender, doRandom, setOpt, shuffler } = this.props;
     const optionArray = stringToRender.split(" ");
-    randomize();
+    shuffler(); // set doRandom true to shuffle the order of options on every mount
     if (doRandom) {
-      const optionsRanArray = this.shuffle(optionArray);
-      setOpt(optionsRanArray);
+      const optionsNewArray = this.shuffle(optionArray); // perform shuffle
+      setOpt(optionsNewArray); // set Options array prop
     } else {
-      setOpt(optionArray);
+      setOpt(optionArray); // set Options array prop
     }
   }
 
   componentDidUpdate() {
     const { setCorrect, stringToRender, ans } = this.props;
-    const tempString = ans.join(" ");
-    let tempBool = true;
-    tempBool = tempString === stringToRender;
+    if (ans.length === stringToRender.split(" ").length) {
+      // check if answer is complete
+      const tempString = ans.join(" ");
+      let tempBool = true;
+      tempBool = tempString === stringToRender; // if answer is complete then check if its correct
+      setCorrect(tempBool);
+    }
+    // IF THERE WAS NO JOIN METHOD IN JAVASCRIPT
+
     // if (ans.length === correctAns.length) {
     //   for (let i = 0; i < ans.length; i += 1) {
     //     // Check if we have nested arrays
@@ -44,10 +53,21 @@ class Home extends Component {
     //     }
     //   }
     //   }
-    setCorrect(tempBool);
   }
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    const { reset } = this.props;
+    reset();
+    BackHandler.exitApp();
+    return true;
+  };
+
   shuffle = data => {
+    // shuffle options array
     const temp = data;
     let currentIndex = data.length;
     let temporaryValue;
@@ -68,44 +88,60 @@ class Home extends Component {
     return temp;
   };
 
+  reset = () => {
+    const { reset, stringToRender, shuffler, doRandom, setOpt } = this.props;
+    reset();
+    // also reset optionsGrid
+    const optionArray = stringToRender.split(" ");
+    shuffler(); // set doRandom true to shuffle the order of options on every mount
+    if (doRandom) {
+      const optionsNewArray = this.shuffle(optionArray); // perform shuffle
+      setOpt(optionsNewArray); // set Options array prop
+    } else {
+      setOpt(optionArray); // set Options array prop
+    }
+  };
+
   buttonPressed = index => {
+    // called when option is clicked
     const { opt, insert, deleteOptions } = this.props;
     insert(opt[index]);
     deleteOptions(index);
   };
 
+  renderQuestion = () => {
+    // question grid
+    const { stringToRender } = this.props;
+
+    return <Text style={{ fontSize: 20 }}>{stringToRender}</Text>;
+  };
+
   renderAnswer = () => {
+    // answer grid
     const { ans } = this.props;
     return ans.map((item, index) => <Button key={index.toString()} index={index} title={item} />);
   };
 
-  renderQuestion = () => {
-    const question = "Winter is Coming";
-    const quesArray = question.split("");
-    return quesArray.map((item, index) => (
-      <Text key={index.toString()} style={{ fontSize: 15 }}>
-        {item}
-      </Text>
-    ));
-  };
-
   renderOptions = () => {
-    const { opt, isCorrect } = this.props;
+    // options grid
+    const { correct, inCorrect } = styles;
+    const { opt, isCorrect, ans } = this.props;
     if (isCorrect) {
+      // render correct if answer is correct
       return (
-        <View
-          style={{
-            height: "90%",
-            width: "80%",
-            backgroundColor: "green",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <View style={correct}>
           <Text style={{ fontSize: 35, color: "white" }}>Correct</Text>
         </View>
       );
     }
+    if (opt.length === 0 && !isCorrect && ans.length !== 0) {
+      return (
+        <TouchableOpacity style={inCorrect} onPress={this.reset}>
+          <Text style={{ fontSize: 35, color: "white" }}>Incorrect</Text>
+        </TouchableOpacity>
+      );
+    }
+    // otherwise render options
     return opt.map((item, index) => (
       <Button key={index.toString()} title={item} onPress={this.buttonPressed} index={index} />
     ));
@@ -131,20 +167,22 @@ Home.propTypes = {
   stringToRender: PropTypes.string.isRequired,
   doRandom: PropTypes.bool,
   isCorrect: PropTypes.bool,
-  randomize: PropTypes.func,
+  shuffler: PropTypes.func,
   setOpt: PropTypes.func,
   insert: PropTypes.func,
   setCorrect: PropTypes.func,
   deleteOptions: PropTypes.func,
+  reset: PropTypes.func,
 };
 Home.defaultProps = {
   doRandom: false,
   isCorrect: false,
-  randomize: () => true,
+  shuffler: () => true,
   setOpt: () => true,
   insert: () => true,
   setCorrect: () => true,
   deleteOptions: () => true,
+  reset: () => true,
 };
 
 const mapStateToProps = state => ({
@@ -155,11 +193,12 @@ const mapStateToProps = state => ({
   doRandom: state.initial.doRandom,
 });
 const mapDispatchToProps = dispatch => ({
-  randomize: () => dispatch(initialActions.randomize()),
+  shuffler: () => dispatch(initialActions.shuffler()),
   setOpt: data => dispatch(optActions.setOptions(data)),
   insert: input => dispatch(ansActions.insert(input)),
   setCorrect: value => dispatch(ansActions.setCorrect(value)),
   deleteOptions: index => dispatch(optActions.deleteOptions(index)),
+  reset: () => dispatch({ type: "RESET" }),
 });
 
 const HomeComponent = connect(

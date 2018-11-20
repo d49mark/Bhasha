@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 
+// styles for home component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -11,7 +12,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: "black",
     justifyContent: "center",
-    alignContent: "center",
+    alignItems: "center",
+  },
+  correct: {
+    height: "90%",
+    width: "80%",
+    backgroundColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inCorrect: {
+    height: "90%",
+    width: "80%",
+    backgroundColor: "red",
+    justifyContent: "center",
     alignItems: "center",
   },
 });

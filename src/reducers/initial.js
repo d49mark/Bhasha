@@ -1,5 +1,5 @@
 export const types = {
-  RANDOM_ORDER: "RANDOM_ORDER",
+  SHUFFLE_ORDER: "RANDOM_ORDER",
 };
 
 const INITIAL_STATE = {
@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 };
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.RANDOM_ORDER:
+    case types.SHUFFLE_ORDER:
       return { ...state, doRandom: true };
     default:
       return state;
@@ -16,5 +16,5 @@ export default (state = INITIAL_STATE, action) => {
 };
 
 export const actions = {
-  randomize: data => ({ type: types.RANDOM_ORDER, data }),
+  shuffler: data => ({ type: types.SHUFFLE_ORDER, data }),
 };
