@@ -1,6 +1,6 @@
 # Bhasha
 A little fun with words
-![Alt text](/ScreenShots/Start.png| width=100| height=100)
+![Alt text](/ScreenShots/Start.png| width=100)
 
 ## Getting Started
 
