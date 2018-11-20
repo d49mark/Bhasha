@@ -1,9 +1,9 @@
 # Bhasha
 A little fun with words.
-<img src="/ScreenShots/Start.png"  width="200" height="500">
-<img src="/ScreenShots/Onclick.png"  width="200" height="500">
-<img src="/ScreenShots/Correct.png"  width="200" height="500">
-<img src="/ScreenShots/Incorrect.png"  width="200" height="500">
+<img src="/ScreenShots/Start.png"  width="200" height="400">
+<img src="/ScreenShots/Onclick.png"  width="200" height="400">
+<img src="/ScreenShots/Correct.png"  width="200" height="400">
+<img src="/ScreenShots/Incorrect.png"  width="200" height="400">
 
 
 
