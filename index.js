@@ -10,10 +10,7 @@ import rootReducer from "./src/reducers";
 YellowBox.ignoreWarnings(["Require cycle"]);
 console.disableYellowBox = true;
 /* eslint-disable no-underscore-dangle */
-const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = createStore(rootReducer);
 /* eslint-enable */
 const AppContainer = () => (
   <Provider store={store}>
