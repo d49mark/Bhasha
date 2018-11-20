@@ -1,6 +1,6 @@
 # Bhasha
 A little fun with words
-![Alt text](/ScreenShots/Start.png | width=100)
+<img src="https://github.com/favicon.ico" width="48">
 
 ## Getting Started
 
